@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>This is real HTML page - Home HTML</h1>
+    <form action="{% url 'result' %}">
+    {% csrf_token %}
+        RI: <input type="text" required name="RI"> <br><br>
+        NA: <input type="text" required name="NA"> <br><br>
+        MG: <input type="text" required name="MG"> <br><br>
+        AI: <input type="text" required name="AI"> <br><br>
+        SI: <input type="text" required name="SI"> <br><br>
+        K: <input type="text" required name="K"> <br><br>
+        CA: <input type="text" required name="CA"> <br><br>
+        BA: <input type="text" required name="BA"> <br><br>
+        FE: <input type="text" required name="FE"> <br><br>
+
+        <input type="submit" name="" value="submit">  
+
+    </form>
+</body>
+</html>
