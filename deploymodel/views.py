@@ -1,8 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-import pandas as pd
-import numpy as np
-import joblib
+
 
 def home(request):
     return render(request, "home.html")
