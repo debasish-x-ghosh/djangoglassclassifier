@@ -45,4 +45,4 @@ def resultpredictcarprice(request):
     },index=[0])
 
     ans = cls2.predict(data_new)
-    return render(request, "resultpredictcarprice.html",{'ans': ans, 'lis': data_new})
+    return render(request, "resultpredictcarprice.html",{'ans': ans})
