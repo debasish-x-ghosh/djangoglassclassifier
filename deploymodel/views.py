@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-import joblib
+import joblib 
 import pandas as pd
 
 def home(request):
@@ -34,15 +34,25 @@ def resultclassifyglass(request):
 def resultpredictcarprice(request):
     cls2 = joblib.load('car_price_predictor.sav')
 
-    data_new = pd.DataFrame({
-        'Present_Price':float(request.GET['Present_Price']),
-        'Kms_Driven':int(request.GET['Kms_Driven']),
-        'Fuel_Type':int(request.GET['Fuel_Type']),
-        'Seller_Type':int(request.GET['Seller_Type']),
-        'Transmission':int(request.GET['Transmission']),
-        'Owner':int(request.GET['Owner']),
-        'Age':int(request.GET['Age'])
-    },index=[0])
+    # lis=[]
+    # lis.append(request.GET['Present_Price'])
+    # lis.append(request.GET['Kms_Driven'])
+    # lis.append(request.GET['Fuel_Type'])
+    # lis.append(request.GET['Seller_Type'])
+    # lis.append(request.GET['Transmission'])
+    # lis.append(request.GET['Owner'])
+    # lis.append(request.GET['Age'])
 
+    Present_Price = float(request.GET['Present_Price'])
+    Kms_Driven = int(request.GET['Kms_Driven'])
+    Fuel_Type = int(request.GET['Fuel_Type'])
+    Seller_Type = int(request.GET['Seller_Type'])
+    Transmission = int(request.GET['Transmission'])
+    Owner = int(request.GET['Owner'])
+    Age = int(request.GET['Age'])
+    data_new = pd.DataFrame([[Present_Price, Kms_Driven, Fuel_Type, Seller_Type, Transmission, Owner, Age]],
+                            columns = ['Present_Price', 'Kms_Driven', 'Fuel_Type', 'Seller_Type', 'Transmission', 'Owner', 'Age'])
+        
+    #ar = np.array([5.0,0,0,0,0,0,9],dtype = float)
     ans = cls2.predict(data_new)
     return render(request, "resultpredictcarprice.html",{'ans': ans})
