@@ -7,10 +7,22 @@
 </head>
 <body>
     <h1>
-        Predict car price page
+        Predict car price page --------
     </h1>
     <h4>
         <a href="{% url 'home' %}">Go back</a>
     </h4>
+    <form action="{% url 'resultpredictcarprice' %}">
+        {% csrf_token %} 
+            Present_Price: <input type="text" required name="Present_Price"> <br><br>
+            Kms_Driven: <input type="text" required name="Kms_Driven"> <br><br>
+            Fuel_Type: <input type="text" required name="Fuel_Type"> <br><br>
+            Seller_Type: <input type="text" required name="Seller_Type"> <br><br>
+            Transmission: <input type="text" required name="Transmission"> <br><br>
+            Owner: <input type="text" required name="Owner"> <br><br>
+            Age: <input type="text" required name="Age"> <br><br>
+    
+        <input type="submit" name="" value="submit">  
+    </form> 
 </body>
 </html>

@@ -7,6 +7,6 @@ urlpatterns = [
     path('', views.home, name="home"),
     path('classifyglass/', views.classifyglass, name="classifyglass"),
     path('predictcarprice/', views.predictcarprice, name="predictcarprice"),
-    # path('resultclassifyglass/', views.resultclassifyglass, name="resultclassifyglass"),
-    # path('resultpredictcarprice/', views.resultpredictcarprice, name="resultpredictcarprice")
+    path('resultclassifyglass/', views.resultclassifyglass, name="resultclassifyglass"),
+    path('resultpredictcarprice/', views.resultpredictcarprice, name="resultpredictcarprice")
 ]
