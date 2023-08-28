@@ -2,6 +2,17 @@ from django.http import HttpResponse
 from django.shortcuts import render
 import joblib 
 import pandas as pd
+import os 
+from PyPDF2 import PdfReader
+from langchain.embeddings.openai import OpenAIEmbeddings
+from langchain.text_splitter import CharacterTextSplitter
+from langchain.vectorstores import FAISS 
+from langchain.chains.question_answering import load_qa_chain
+from langchain.llms import OpenAI
+from django.conf import settings
+
+os.environ["OPENAI_API_KEY"] = "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"
+global_docsearch = {}
 
 def home(request):
     return render(request, "home.html")
@@ -11,6 +22,67 @@ def classifyglass(request):
 
 def predictcarprice(request):
     return render(request, "predictcarprice.html")
+
+def lcreadpdf(request):
+    return render(request, "lcreadpdf.html")
+
+def loadpdfopnai(request):
+    return render(request, "lcreadpdf.html")
+
+def resultlcreadpdf(request):
+    input1 = request.GET['iptxt1'] 
+    result = llmlc(input1, request)
+    return render(request, "lcreadpdf.html", {'question': input1, 'result': result})
+
+def llmlc(ques, request):
+    # lanchain code starts here  
+   
+    print("*****************************************") 
+    doc_reader = PdfReader('C:/Users/dgwor/PycharmProjects/jptrnb-ai/lanhchain-2/djlc/appdjlc/media/RespectedNetaji.pdf')
+    #print(doc_reader)
+    # read data from the file and put them into a variable called raw_text
+    raw_text = ''
+    for i, page in enumerate(doc_reader.pages):
+        text = page.extract_text()
+        if text:
+            raw_text += text
+    print(len(raw_text))
+    #print(raw_text[:100])
+    # Splitting up the text into smaller chunks for indexing
+    text_splitter = CharacterTextSplitter(        
+        separator = "\n",
+        chunk_size = 1000,
+        chunk_overlap  = 200, #striding over the text
+        length_function = len,
+    )
+    texts = text_splitter.split_text(raw_text)
+    #print(len(texts))
+    #print(texts[0])
+    #print(texts[1])
+    # Download embeddings from OpenAI
+    embeddings = OpenAIEmbeddings()
+    global_docsearch = FAISS.from_texts(texts, embeddings)
+
+ 
+    global_docsearch.embedding_function
+    query = "who was Netaji's father?"
+    docs = global_docsearch.similarity_search(query)
+    print(docs)
+    print(len(docs))
+    print(docs[0])
+    chain = load_qa_chain(OpenAI(), 
+                      chain_type="stuff") # we are going to stuff all the docs in at once
+  
+    chain.llm_chain.prompt.template
+    query = ques
+    docs = global_docsearch.similarity_search(query)
+    op = chain.run(input_documents=docs, question=query)
+    
+    print("---------------------------------------------")
+    print(docs)
+    print(op)
+    # lanchain code ends here
+    return op
 
 def resultclassifyglass(request):
     cls = joblib.load('final_model.sav')
@@ -32,6 +104,7 @@ def resultclassifyglass(request):
     return render(request, "resultclassifyglass.html", {'ans': ans, 'lis': lis})
 
 def resultpredictcarprice(request):
+    
     cls2 = joblib.load('car_price_predictor.sav')
 
     # lis=[]
